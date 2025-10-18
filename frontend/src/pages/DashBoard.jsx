@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Thermometer, Sun, Droplets, Sprout, Fan, Lightbulb, Droplet, Settings } from 'lucide-react';
 
 export default function DashBoard() {
@@ -35,19 +36,15 @@ export default function DashBoard() {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await res.json();
-      console.log(data);
 
-      // Map LDR to 0-100%
-      // const ldrPercent = Math.min(Math.max(Math.round((data.ldr / 4095) * 100), 0), 100);
-
-      setSensors({
-        temp: data.temp,
-        humi: data.humi,
-        soil: data.soil,
-        ldr: data.ldr
-      });
+      setSensors(prev => ({
+        ...prev,
+        temp: data.temp || prev.temp,
+        humi: data.humi || prev.humi,
+        soil: data.soil || prev.soil,
+        ldr: data.ldr || prev.ldr
+      }));
       setLastUpdate(new Date());
-      console.log('Sensor data refreshed at:', new Date().toLocaleTimeString());
     } catch (error) {
       console.error('Error fetching sensor data:', error);
     }
@@ -77,7 +74,6 @@ export default function DashBoard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ btn: codeToSend })
       });
-      console.log(`Sent { btn: ${codeToSend} } for ${device}`);
     } catch (err) {
       console.error('Error sending button command:', err);
     }
@@ -96,19 +92,29 @@ export default function DashBoard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ btn: newMode })
       });
-      console.log(`Mode changed to ${newMode}`);
     } catch (err) {
       console.error('Error sending mode change:', err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
       <div className="max-w-6xl mx-auto">
+
+        {/* Navigation Bar */}
+        <nav className="mb-8 flex justify-between items-center bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+          <h1 className="text-2xl font-bold text-white">Green House</h1>
+          <div className="space-x-6">
+            <Link to="/" className="text-slate-300 hover:text-white font-semibold">Dashboard</Link>
+            <Link to="/history" className="text-slate-300 hover:text-white font-semibold">History</Link>
+            <Link to="/about" className="text-slate-300 hover:text-white font-semibold">About Us</Link>
+          </div>
+        </nav>
+
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Green House Dashboard</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
             <p className="text-slate-400">Monitor and control your devices</p>
           </div>
           <div className="text-right">
@@ -161,7 +167,7 @@ export default function DashBoard() {
         {/* Control Panel */}
         <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg">
           <h2 className="text-2xl font-bold text-white mb-6">Control Panel</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             {/* Fan */}
             <button
               onClick={() => toggleControl('fan')}
