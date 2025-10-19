@@ -102,6 +102,68 @@ export default function HistoryPage() {
           </div>
         </div>
 
+        {/* 🌡️ Avg Cards START */}
+        {data.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-500 bg-opacity-20 rounded-lg">
+                  <Thermometer className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 font-medium">Avg Temp</p>
+                  <p className="text-xl font-bold text-white">
+                    {(data.reduce((acc, item) => acc + item.temp, 0) / data.length).toFixed(1)}°C
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-500 bg-opacity-20 rounded-lg">
+                  <Droplets className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 font-medium">Avg Humidity</p>
+                  <p className="text-xl font-bold text-white">
+                    {(data.reduce((acc, item) => acc + item.humi, 0) / data.length).toFixed(1)}%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-500 bg-opacity-20 rounded-lg">
+                  <Sprout className="w-5 h-5 text-green-400" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 font-medium">Avg Soil</p>
+                  <p className="text-xl font-bold text-white">
+                    {(data.reduce((acc, item) => acc + item.soil, 0) / data.length).toFixed(0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-yellow-500 bg-opacity-20 rounded-lg">
+                  <Sun className="w-5 h-5 text-yellow-400" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400 font-medium">Avg Light</p>
+                  <p className="text-xl font-bold text-white">
+                    {(data.reduce((acc, item) => acc + item.ldr, 0) / data.length).toFixed(0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* 🌡️ Avg Cards END */}
+
         {/* Table */}
         <div className="bg-slate-800 rounded-xl shadow-lg border border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
