@@ -1,7 +1,7 @@
 services:
   frontend:
     build: .
-    container_name: vite-react-frontend
+    container_name: greenhouse-frontend
     ports:
       - "4173:4173"
     restart: unless-stopped
